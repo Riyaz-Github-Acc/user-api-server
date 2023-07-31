@@ -1,6 +1,6 @@
 import User from "../model/userModel.js";
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
   const newUser = new User(req.body);
 
   // POST
@@ -12,16 +12,12 @@ export const createUser = async (req, res) => {
       data: savedUser,
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    next(err);
   }
 };
 
 // UPDATE
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
@@ -34,16 +30,12 @@ export const updateUser = async (req, res) => {
       data: updatedUser,
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    next(err);
   }
 };
 
 // DELETE
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.status(200).json({
@@ -51,16 +43,12 @@ export const deleteUser = async (req, res) => {
       message: "User deleted successfully!",
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    next(err);
   }
 };
 
 // GET
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     res.status(200).json({
@@ -69,16 +57,12 @@ export const getUser = async (req, res) => {
       data: user,
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    next(err);
   }
 };
 
 // GET ALL
-export const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res, next) => {
   try {
     const allUsers = await User.find({});
     res.status(200).json({
@@ -87,10 +71,6 @@ export const getAllUsers = async (req, res) => {
       data: allUsers,
     });
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      status: "fail",
-      message: err.message,
-    });
+    next(err);
   }
 };
