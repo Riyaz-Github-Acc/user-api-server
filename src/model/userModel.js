@@ -4,7 +4,6 @@ const UserSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      unique: [true, "Name already in use"],
       required: [true, "Please enter a name"],
     },
 

@@ -3,6 +3,14 @@ import User from "../model/userModel.js";
 
 export const createUser = expressAsyncHandler(async (req, res) => {
   const newUser = new User(req.body);
+  const { name } = req.body;
+  // User exists
+  const userExist = await User.findOne({
+    name: { $regex: name, $options: "i" },
+  });
+  if (userExist) {
+    throw new Error("User already exists!");
+  }
 
   // POST
   const savedUser = await newUser.save();
