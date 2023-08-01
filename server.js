@@ -3,6 +3,10 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
+import {
+  notFound,
+  globalErrorHandler,
+} from "./src/middleware/globalErrorHandler.js";
 import userRoute from "./src/routes/userRoute.js";
 
 dotenv.config();
@@ -23,16 +27,8 @@ app.use(express.json());
 
 app.use("/api/users", userRoute);
 
-app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong!";
-
-  res.status(errorStatus).json({
-    success: false,
-    status: errorStatus,
-    message: errorMessage,
-  });
-});
+app.use(notFound);
+app.use(globalErrorHandler);
 
 const port = 8000;
 app.listen(port, () => {
